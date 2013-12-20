@@ -56,17 +56,18 @@ func (file *File) Close() {
 	file.props = nil
 }
 
-func convertAndFree(cs *C.char) string {
+func convertAndFree(cs *C.char) *string {
 	if cs == nil {
-		return ""
+		return nil
 	}
 
 	defer C.free(unsafe.Pointer(cs))
-	return C.GoString(cs)
+	str := C.GoString(cs)
+	return &str
 }
 
 // Returns a string with this tag's title.
-func (file *File) Title() string {
+func (file *File) Title() *string {
 	glock.Lock()
 	defer glock.Unlock()
 
@@ -83,7 +84,7 @@ func (file *File) SetTitle(title string) {
 }
 
 // Returns a string with this tag's artist.
-func (file *File) Artist() string {
+func (file *File) Artist() *string {
 	glock.Lock()
 	defer glock.Unlock()
 
@@ -100,7 +101,7 @@ func (file *File) SetArtist(artist string) {
 }
 
 // Returns a string with this tag's album name.
-func (file *File) Album() string {
+func (file *File) Album() *string {
 	glock.Lock()
 	defer glock.Unlock()
 
@@ -108,7 +109,7 @@ func (file *File) Album() string {
 }
 
 // Returns a string with this tag's comment.
-func (file *File) Comment() string {
+func (file *File) Comment() *string {
 	glock.Lock()
 	defer glock.Unlock()
 
@@ -116,7 +117,7 @@ func (file *File) Comment() string {
 }
 
 // Returns a string with this tag's genre.
-func (file *File) Genre() string {
+func (file *File) Genre() *string {
 	glock.Lock()
 	defer glock.Unlock()
 
